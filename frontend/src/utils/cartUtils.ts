@@ -14,7 +14,7 @@ export const addToCartUnified = async (
 ): Promise<boolean> => {
   try {
     // Ensure mainImage is properly formatted
-    const mainImage = product?.mainImage || '';
+    const mainImage = product?.mainImage || product?.image || '';
     const formattedMainImage = mainImage.startsWith('http') || mainImage.startsWith('/') ? mainImage : `/${mainImage}`;
 
     console.log('🛒 [CartUtils] Adding to cart:', {
