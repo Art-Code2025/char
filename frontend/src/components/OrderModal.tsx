@@ -16,13 +16,13 @@ interface OrderItem {
 
 interface Order {
   id: number;
-  customerName: string;
-  customerPhone: string;
-  customerEmail: string;
-  address: string;
-  city: string;
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+  address?: string;
+  city?: string;
   items: OrderItem[];
-  total: number;
+  total?: number;
   subtotal?: number;
   deliveryFee?: number;
   couponDiscount?: number;
@@ -31,6 +31,20 @@ interface Order {
   status: 'pending' | 'confirmed' | 'preparing' | 'shipped' | 'delivered' | 'cancelled';
   createdAt: string;
   notes?: string;
+  serviceName?: string;
+  serviceId?: string;
+  categoryName?: string;
+  serviceCategoryName?: string;
+  startLocation?: string;
+  endLocation?: string;
+  selectedDestination?: string;
+  fullName?: string;
+  phoneNumber?: string;
+  customAnswers?: Record<string, any>;
+  customAnswersWithQuestions?: Record<string, any>;
+  price?: string;
+  fullData?: any;
+  type?: 'product' | 'booking' | 'service';
 }
 
 interface OrderModalProps {
@@ -92,7 +106,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
   };
 
   const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(text || '').then(() => {
       toast.success(`تم نسخ ${label}`);
     });
   };
@@ -399,7 +413,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                   </div>
                   <div class="customer-item">
                     <strong>📱 رقم الهاتف:</strong>
-                    <span>${order.customerPhone}</span>
+                    <span>${order.customerPhone || 'غير محدد'}</span>
                   </div>
                   <div class="customer-item">
                     <strong>📧 البريد الإلكتروني:</strong>
@@ -427,7 +441,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                   </tr>
                 </thead>
                 <tbody>
-                  ${order.items.map(item => `
+                  ${(order.items || []).map((item, index) => `
                     <tr>
                       <td style="font-weight: 600; color: #2d3748;">${item.productName}</td>
                       <td style="font-weight: 700; color: #4299e1;">${item.quantity}</td>
@@ -590,7 +604,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                     <span className="text-xs sm:text-sm font-medium text-gray-700 text-center">نسخ العنوان</span>
                   </button>
                   <button
-                    onClick={() => copyToClipboard(order.customerPhone, 'رقم الهاتف')}
+                    onClick={() => copyToClipboard(order.customerPhone || 'غير محدد', 'رقم الهاتف')}
                     className="flex flex-col items-center p-3 sm:p-4 bg-white rounded-lg sm:rounded-xl border-2 border-green-200 hover:border-green-400 hover:shadow-lg transition-all"
                   >
                     <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mb-1 sm:mb-2" />
@@ -637,7 +651,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">رقم الهاتف</p>
-                        <p className="font-bold text-lg text-gray-800 dir-ltr">{order.customerPhone}</p>
+                        <p className="font-bold text-lg text-gray-800 dir-ltr">{order.customerPhone || 'غير محدد'}</p>
                       </div>
                     </div>
 
@@ -721,10 +735,10 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
               <div className="bg-white rounded-2xl border-2 border-gray-100 p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center">
                   <Package className="w-6 h-6 text-purple-600 ml-3" />
-                  تفاصيل المنتجات ({order.items.length} منتج)
+                  تفاصيل المنتجات ({order.items?.length || 0} منتج)
                 </h3>
                 <div className="space-y-4">
-                  {order.items.map((item, index) => (
+                  {(order.items || []).map((item, index) => (
                     <div key={index} className="border-2 border-gray-100 rounded-xl p-6 hover:shadow-lg transition-all">
                       <div className="flex items-start space-x-4">
                         {item.productImage && (
@@ -882,7 +896,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                   <div>
                     <h4 className="font-bold text-gray-800 mb-3">بيانات العميل:</h4>
                     <p className="text-gray-600">{order.customerName}</p>
-                    <p className="text-gray-600">{order.customerPhone}</p>
+                    <p className="text-gray-600">{order.customerPhone || 'غير محدد'}</p>
                     <p className="text-gray-600">{order.customerEmail}</p>
                   </div>
                   <div>
@@ -902,7 +916,7 @@ const OrderModal: React.FC<OrderModalProps> = ({ order, isOpen, onClose, onStatu
                     </tr>
                   </thead>
                   <tbody>
-                    {order.items.map((item, index) => (
+                    {(order.items || []).map((item, index) => (
                       <tr key={index}>
                         <td className="border border-gray-200 p-3">{item.productName}</td>
                         <td className="border border-gray-200 p-3">{item.quantity}</td>

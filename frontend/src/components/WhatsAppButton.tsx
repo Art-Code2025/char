@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 const WhatsAppButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
-  const phoneNumber = '+966551064118';
+  const phoneNumber = '+966569806839';
   const message = 'مرحباً، أريد الاستفسار عن منتجاتكم';
 
   useEffect(() => {

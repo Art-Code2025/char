@@ -13,6 +13,10 @@ export const addToCartUnified = async (
   product: any = {}
 ): Promise<boolean> => {
   try {
+    // Ensure mainImage is properly formatted
+    const mainImage = product?.mainImage || '';
+    const formattedMainImage = mainImage.startsWith('http') || mainImage.startsWith('/') ? mainImage : `/${mainImage}`;
+
     console.log('🛒 [CartUtils] Adding to cart:', {
       productId,
       productName,
@@ -21,7 +25,8 @@ export const addToCartUnified = async (
       selectedOptions,
       optionsPricing,
       attachments,
-      hasProduct: !!product
+      hasProduct: !!product,
+      mainImage: formattedMainImage
     });
 
     // تحضير البيانات للطلب
@@ -33,12 +38,12 @@ export const addToCartUnified = async (
       selectedOptions,
       optionsPricing,
       attachments,
-      image: product?.mainImage || '',
+      image: formattedMainImage,
       product: {
         id: productId,
         name: productName,
         price,
-        mainImage: product?.mainImage || '',
+        mainImage: formattedMainImage,
         description: product?.description || '',
         stock: product?.stock || 0,
         productType: product?.productType || '',

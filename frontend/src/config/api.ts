@@ -40,32 +40,44 @@ export const buildImageUrl = (imagePath: string | null | undefined): string => {
 
   // Handle null, undefined, or empty strings
   if (!imagePath || imagePath.trim() === '') {
+    console.log('⚠️ [buildImageUrl] Empty image path, using placeholder');
     return placeholder;
   }
 
   const cleanPath = imagePath.trim();
 
-  // Handle data URLs (base64 images) - highest priority
+  // Handle data URLs (base64 images)
   if (cleanPath.startsWith('data:image/')) {
+    console.log('✅ [buildImageUrl] Using data URL as is');
     return cleanPath;
   }
   
   // Handle Cloudinary URLs
   if (cleanPath.includes('cloudinary.com') || cleanPath.includes('res.cloudinary.com')) {
+    console.log('✅ [buildImageUrl] Using Cloudinary URL as is');
     return cleanPath;
   }
   
-  // Handle other absolute URLs (HTTP/HTTPS)
+  // Handle absolute URLs (HTTP/HTTPS)
   if (cleanPath.startsWith('http://') || cleanPath.startsWith('https://')) {
+    console.log('✅ [buildImageUrl] Using absolute URL as is');
     return cleanPath;
   }
   
   // Handle relative paths from public folder
   if (cleanPath.startsWith('/')) {
+    console.log('✅ [buildImageUrl] Using relative path from root');
     return cleanPath;
   }
+
+  // Handle relative paths without leading slash
+  if (cleanPath.includes('/')) {
+    console.log('✅ [buildImageUrl] Adding leading slash to relative path');
+    return `/${cleanPath}`;
+  }
   
-  // Handle relative paths - assume they're from public folder
+  // Handle just filename
+  console.log('✅ [buildImageUrl] Adding leading slash to filename');
   return `/${cleanPath}`;
 };
 
