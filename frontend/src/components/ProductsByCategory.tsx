@@ -264,13 +264,22 @@ const ProductsByCategory: React.FC = () => {
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
               : 'grid-cols-1'
           }`}>
-            {filteredProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                viewMode={viewMode}
-              />
-            ))}
+            {filteredProducts.map((product) => {
+              const productForCard = {
+                ...product,
+                id: String(product.id),             // ProductCard expects string
+                image: product.mainImage,            // map mainImage → image
+                category: category?.name || '',      // provide category name
+              } as any; // quick cast to satisfy type without over-refactoring
+
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={productForCard}
+                  viewMode={viewMode}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12">

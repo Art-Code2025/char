@@ -54,13 +54,15 @@ interface ProductCardProps {
   onAddToCart?: (product: Product) => void;
   onAddToWishlist?: (product: Product) => void;
   className?: string;
+  viewMode?: 'grid' | 'list';
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
   onAddToCart, 
   onAddToWishlist, 
-  className = '' 
+  className = '',
+  viewMode
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);

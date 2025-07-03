@@ -36,6 +36,8 @@ interface CartItem {
     sizeGuideImage?: string;
     productImage?: string;
   };
+  productImage?: string; // root-level optional image
+  image?: string; // root-level image from API
 }
 
 interface ProductOption {
@@ -68,8 +70,8 @@ const ShoppingCart: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCheckoutAuthModalOpen, setIsCheckoutAuthModalOpen] = useState(false);
   
-  // إضافة ref للـ timeout
-  const textSaveTimeoutRef = useRef<number | null>(null);
+  // استخدم النوع الصحيح للـ Timeout لتجنب خطأ TypeScript
+  const textSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navigate = useNavigate();
 
@@ -358,7 +360,8 @@ const ShoppingCart: React.FC = () => {
     
     try {
       for (const file of Array.from(files)) {
-        const response = await uploadAPI.single(file, 'attachments');
+        // الدالة single تقبل ملفاً واحداً؛ إذا احتاجت مساراً ثانياً حدّث التايبز بدلاً من تمرير قيمة زائدة
+        const response = await uploadAPI.single(file);
         if (response.success) {
           uploadedUrls.push(response.data.url);
         }
@@ -429,7 +432,11 @@ const ShoppingCart: React.FC = () => {
   });
 
   // دالة محدثة لحفظ البيانات فوراً - محدثة للعمل مع الضيوف
-  const saveOptionsToBackend = async (itemId: number, field: string, value: any) => {
+  const saveOptionsToBackend = async (
+    itemId: number,
+    field: 'selectedOptions' | 'attachments',
+    value: any
+  ): Promise<boolean> => {
     // For serverless, we just save to localStorage for now
     const updatedItems = cartItems.map(item => {
       if (item.id === itemId) {
@@ -444,6 +451,9 @@ const ShoppingCart: React.FC = () => {
     
     setCartItems(updatedItems);
     saveCartToLocalStorage(updatedItems);
+    
+    // فى الوقت الحالى نفترض الحفظ ناجح دائماً
+    return true;
   };
 
   // دالة لمعالجة نجاح تسجيل الدخول
@@ -689,7 +699,7 @@ const ShoppingCart: React.FC = () => {
                             <div className="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg">
                               {item.product?.mainImage ? (
                                 <img 
-                                  src={buildImageUrl(item.product.mainImage)}
+                                  src={buildImageUrl(item.image || item.productImage || item.product?.mainImage)}
                                   alt={item.product?.name || 'منتج'}
                                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 />
@@ -1000,7 +1010,7 @@ const ShoppingCart: React.FC = () => {
                               <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg">
                                 {item.product?.mainImage ? (
                                   <img 
-                                    src={buildImageUrl(item.product.mainImage)}
+                                    src={buildImageUrl(item.image || item.productImage || item.product?.mainImage)}
                                     alt={item.product?.name || 'منتج'}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                   />

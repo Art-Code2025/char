@@ -1,5 +1,6 @@
 import { getApiBaseUrl } from '../config/api';
 import { getMockProducts, getMockCategories, getMockProductById, MockProduct, MockCategory } from './mockData';
+import { API_ENDPOINTS } from '../config/api';
 
 // Debug log for API base URL
 const apiConfig = {
@@ -604,6 +605,21 @@ export const api = {
       method: 'DELETE',
     });
   },
+};
+
+// -------------------- Auth API --------------------
+export const authAPI = {
+  // Admin login (no auth token required)
+  adminLogin: async (username: string, password: string) => {
+    try {
+      return await apiRequest(`/${API_ENDPOINTS.AUTH_ADMIN}`, {
+        method: 'POST',
+        body: JSON.stringify({ username, password })
+      }, true);
+    } catch (error) {
+      throw error;
+    }
+  }
 };
 
 export default {
