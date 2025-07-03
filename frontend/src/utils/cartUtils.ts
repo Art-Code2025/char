@@ -137,7 +137,8 @@ export const addToCartUnified = async (
         selectedOptions,
         optionsPricing,
         attachments,
-        product: requestBody.product
+        product: requestBody.product,
+        productImage: formattedMainImage // إضافة صورة المنتج مباشرة في العنصر
       };
       cartItems.push(newItem);
       console.log('🆕 [CartUtils] Added new item to cart');

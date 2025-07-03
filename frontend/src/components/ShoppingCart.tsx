@@ -34,6 +34,7 @@ interface CartItem {
     dynamicOptions?: ProductOption[];
     specifications?: { name: string; value: string }[];
     sizeGuideImage?: string;
+    productImage?: string;
   };
 }
 
