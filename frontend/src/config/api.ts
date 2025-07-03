@@ -52,6 +52,12 @@ export const buildImageUrl = (imagePath: string | null | undefined): string => {
     return cleanPath;
   }
   
+  // NEW: Handle data URLs that erroneously have a leading slash ("/data:image/")
+  if (cleanPath.startsWith('/data:image/')) {
+    console.warn('⚠️ [buildImageUrl] Detected leading slash in data URL, removing...');
+    return cleanPath.slice(1); // Remove the leading slash to form a valid data URL
+  }
+  
   // Handle Cloudinary URLs
   if (cleanPath.includes('cloudinary.com') || cleanPath.includes('res.cloudinary.com')) {
     console.log('✅ [buildImageUrl] Using Cloudinary URL as is');

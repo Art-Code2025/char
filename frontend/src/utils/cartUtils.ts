@@ -15,7 +15,13 @@ export const addToCartUnified = async (
   try {
     // Ensure mainImage is properly formatted
     const mainImage = product?.mainImage || product?.image || '';
-    const formattedMainImage = mainImage.startsWith('http') || mainImage.startsWith('/') ? mainImage : `/${mainImage}`;
+    // Avoid adding leading slash for data URLs ("data:image/")
+    const formattedMainImage =
+      mainImage.startsWith('http') ||
+      mainImage.startsWith('/') ||
+      mainImage.startsWith('data:image/')
+        ? mainImage
+        : `/${mainImage}`;
 
     console.log('🛒 [CartUtils] Adding to cart:', {
       productId,
