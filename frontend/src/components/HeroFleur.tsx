@@ -29,8 +29,8 @@ const HeroFleur: React.FC = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20">
         <div className="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
-          {/* Left Content */}
-          <div className="space-y-8 text-center lg:text-right">
+          {/* Left Content (Text) */}
+          <div className="space-y-8 text-center lg:text-right order-2 lg:order-1">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg border border-[#C4A484]/50">
               <Sparkles className="w-4 h-4 text-[#8B5A3C]" />
@@ -63,7 +63,12 @@ const HeroFleur: React.FC = () => {
             </div>
 
             {/* Description */}
-            <p className="text-[#8B5A3C] text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+            {/* Mobile-short text */}
+            <p className="sm:hidden text-[#8B5A3C] text-base leading-relaxed max-w-md mx-auto lg:mx-0">
+              روائح فاخرة تحكي قصة الأناقة والجمال.
+            </p>
+            {/* Full text for ≥sm */}
+            <p className="hidden sm:block text-[#8B5A3C] text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
               اكتشف عالماً من الروائح الفاخرة والعطور المميزة التي تحكي قصة الأناقة والجمال. 
               تجربة عطرية لا تُنسى تأخذك إلى عوالم من السحر والإبداع.
             </p>
@@ -105,8 +110,8 @@ const HeroFleur: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Visual */}
-          <div className="relative">
+          {/* Right Visual (Main Image) */}
+          <div className="relative order-1 lg:order-2">
             {/* Main Product Image */}
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-[#C4A484]/20 to-[#D4B896]/20 rounded-3xl blur-3xl group-hover:blur-2xl transition-all duration-500"></div>

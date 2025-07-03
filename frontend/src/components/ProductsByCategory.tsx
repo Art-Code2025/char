@@ -273,11 +273,11 @@ const ProductsByCategory: React.FC = () => {
               } as any; // quick cast to satisfy type without over-refactoring
 
               return (
-                <ProductCard
-                  key={product.id}
+              <ProductCard 
+                key={product.id} 
                   product={productForCard}
-                  viewMode={viewMode}
-                />
+                viewMode={viewMode}
+              />
               );
             })}
           </div>

@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
+    
     try {
       const success = await addToCartUnified(
         product.id,
@@ -84,10 +84,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
       );
 
       if (success) {
-        toast.success(`تم إضافة ${product.name} إلى السلة!`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+      toast.success(`تم إضافة ${product.name} إلى السلة!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
 
         // Notify parent if needed
         if (onAddToCart) {

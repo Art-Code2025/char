@@ -412,17 +412,17 @@ const App: React.FC = () => {
   const handleAddToCart = async (productId: number, productName: string) => {
     try {
       const quantity = quantities[productId] || 1;
-
+      
       // Locate full product details
       const product = categoryProducts
         .flatMap(cp => cp.products)
         .find(p => p.id === productId);
-
+      
       if (!product) {
         toast.error('لم يتم العثور على المنتج');
         return;
       }
-
+      
       // Centralized add-to-cart logic
       const success = await addToCartUnified(
         product.id,
@@ -437,9 +437,9 @@ const App: React.FC = () => {
 
       if (success) {
         // Reset quantity back to 1 after successful addition
-        setQuantities(prev => ({ ...prev, [productId]: 1 }));
+      setQuantities(prev => ({ ...prev, [productId]: 1 }));
       }
-
+      
     } catch (error) {
       console.error('❌ [App] Error in handleAddToCart:', error);
       toast.error('حدث خطأ أثناء إضافة المنتج للسلة');
